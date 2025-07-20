@@ -56,6 +56,12 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+				'forest-primary': 'hsl(var(--forest-primary))',
+				'forest-light': 'hsl(var(--forest-light))',
+				'sage': 'hsl(var(--sage))',
+				'mint': 'hsl(var(--mint))',
+				'emerald': 'hsl(var(--emerald))',
+				'nature-accent': 'hsl(var(--nature-accent))',
 				travel: {
 					ocean: 'hsl(var(--ocean-blue))',
 					coral: 'hsl(var(--coral))',
