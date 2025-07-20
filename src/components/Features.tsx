@@ -17,101 +17,101 @@ const Features: React.FC = () => {
   const features = [
     {
       icon: Sparkles,
-      title: 'IA Personnalisée',
-      description: 'Notre intelligence artificielle analyse vos préférences pour créer le planning parfait',
+      title: 'IA Éco-Intelligente',
+      description: 'Notre IA privilégie les expériences durables et respectueuses de l\'environnement pour créer votre planning parfait',
       badge: 'Innovant',
-      color: 'travel-coral'
+      color: 'forest-primary'
     },
     {
       icon: DollarSign,
-      title: 'Optimisation Budget',
-      description: 'Maximisez votre expérience tout en respectant votre budget avec nos recommandations intelligentes',
+      title: 'Budget Optimisé',
+      description: 'Maximisez votre impact positif tout en respectant votre budget avec nos recommandations éthiques',
       badge: 'Économique',
-      color: 'travel-forest'
+      color: 'emerald'
     },
     {
       icon: Gift,
-      title: 'Activités Gratuites',
-      description: 'Nous privilégions les activités gratuites et authentiques pour une expérience enrichissante',
+      title: 'Activités Naturelles',
+      description: 'Découvrez des activités gratuites en pleine nature et des expériences authentiques locales',
       badge: 'Gratuit',
       color: 'success'
     },
     {
       icon: Clock,
-      title: 'Planning Minuté',
-      description: 'Chaque moment de votre voyage est optimisé avec des horaires détaillés et réalistes',
+      title: 'Planning Responsable',
+      description: 'Chaque moment optimise votre temps tout en minimisant votre empreinte carbone',
       badge: 'Précis',
       color: 'primary'
     },
     {
       icon: Users,
-      title: 'Multi-Groupes',
-      description: 'Parfait pour les familles, couples, amis ou voyageurs solo avec des recommandations adaptées',
-      badge: 'Flexible',
-      color: 'travel-sunset'
+      title: 'Voyage Communautaire',
+      description: 'Connectez-vous avec les communautés locales pour des expériences enrichissantes et équitables',
+      badge: 'Local',
+      color: 'nature-accent'
     },
     {
       icon: Smartphone,
-      title: 'Application Mobile',
-      description: 'Accédez à votre planning partout avec notre interface responsive et intuitive',
+      title: 'Mobile-First',
+      description: 'Interface optimisée pour smartphone avec fonctionnalités hors-ligne pour réduire la consommation',
       badge: 'Mobile',
-      color: 'travel-sky'
+      color: 'forest-light'
     },
     {
       icon: Star,
-      title: 'Recommandations Locales',
-      description: 'Découvrez les secrets les mieux gardés grâce à notre réseau de guides locaux',
-      badge: 'Authentique',
-      color: 'travel-coral'
+      title: 'Guides Éco-certifiés',
+      description: 'Recommandations de guides locaux certifiés en tourisme durable et respectueux',
+      badge: 'Certifié',
+      color: 'emerald'
     },
     {
       icon: Globe,
-      title: 'Destinations Mondiales',
-      description: 'Plus de 500 destinations dans le monde avec des informations actualisées en temps réel',
-      badge: 'Global',
+      title: 'Destinations Vertes',
+      description: 'Plus de 600 destinations éco-responsables avec impact environnemental minimal',
+      badge: 'Durable',
       color: 'primary'
     }
   ];
 
   return (
-    <section className="py-20 bg-secondary/30">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+    <section className="py-12 sm:py-20 bg-secondary/30">
+      <div className="container-mobile">
+        <div className="text-center mb-12 sm:mb-16">
+          <h2 className="heading-mobile sm:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6">
             Pourquoi choisir 
-            <span className="block bg-gradient-hero bg-clip-text text-transparent">
-              VacancesPro ?
+            <span className="block gradient-text mt-2">
+              EcoVoyage ?
             </span>
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Notre plateforme révolutionnaire combine intelligence artificielle et expertise locale 
-            pour créer l'expérience de voyage parfaite selon vos désirs et votre budget.
+          <p className="text-mobile sm:text-xl text-muted-foreground max-w-3xl mx-auto">
+            Notre plateforme révolutionnaire combine IA éco-responsable et expertise locale 
+            pour créer des voyages durables parfaitement adaptés à vos valeurs.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
           {features.map((feature, index) => (
             <Card 
               key={index} 
-              className="group hover:shadow-elevated transition-all duration-300 hover:scale-105 border-border/50 animate-fade-in"
+              className="card-modern group hover:scale-105 animate-fade-in-up"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
               <CardHeader className="text-center pb-4">
-                <div className={`w-16 h-16 mx-auto mb-4 rounded-full bg-${feature.color}/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}>
-                  <feature.icon className={`h-8 w-8 text-${feature.color}`} />
+                <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 rounded-full bg-primary/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                  <feature.icon className="h-6 w-6 sm:h-8 sm:w-8 text-primary" />
                 </div>
                 <Badge 
                   variant="outline" 
-                  className={`mb-3 border-${feature.color}/30 text-${feature.color} bg-${feature.color}/5`}
+                  className="mb-2 sm:mb-3 border-primary/30 text-primary bg-primary/5 text-xs"
                 >
                   {feature.badge}
                 </Badge>
-                <CardTitle className="text-lg font-semibold group-hover:text-primary transition-colors">
+                <CardTitle className="text-sm sm:text-lg font-semibold group-hover:text-primary transition-colors">
                   {feature.title}
                 </CardTitle>
               </CardHeader>
-              <CardContent className="text-center">
-                <p className="text-muted-foreground text-sm leading-relaxed">
+              <CardContent className="text-center px-3 sm:px-6">
+                <p className="text-muted-foreground text-xs sm:text-sm leading-relaxed">
                   {feature.description}
                 </p>
               </CardContent>
@@ -119,27 +119,27 @@ const Features: React.FC = () => {
           ))}
         </div>
 
-        {/* Section CTA */}
-        <div className="mt-20 text-center">
-          <div className="bg-gradient-hero rounded-2xl p-12 text-white">
-            <h3 className="text-3xl font-bold mb-4">
-              Prêt à vivre votre aventure ?
+        {/* Section CTA mobile-optimized */}
+        <div className="mt-12 sm:mt-20 text-center">
+          <div className="bg-gradient-to-br from-forest-primary via-emerald to-nature-accent rounded-2xl p-6 sm:p-12 text-white">
+            <h3 className="text-xl sm:text-3xl font-bold mb-3 sm:mb-4">
+              Prêt pour l'aventure éco-responsable ?
             </h3>
-            <p className="text-xl mb-8 text-white/90">
-              Rejoignez plus de 10 000 voyageurs qui ont déjà planifié leurs vacances de rêve avec nous.
+            <p className="text-sm sm:text-xl mb-6 sm:mb-8 text-white/90">
+              Rejoignez plus de 15 000 éco-voyageurs qui ont créé leurs aventures durables avec nous.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
-                <div className="text-3xl font-bold mb-2">4.9/5</div>
-                <div className="text-white/80">Note moyenne</div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 max-w-2xl mx-auto">
+              <div className="card-glass p-4 sm:p-6">
+                <div className="text-xl sm:text-3xl font-bold mb-1 sm:mb-2">4.9/5</div>
+                <div className="text-xs sm:text-base text-white/80">Note écologique</div>
               </div>
-              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
-                <div className="text-3xl font-bold mb-2">10K+</div>
-                <div className="text-white/80">Plannings créés</div>
+              <div className="card-glass p-4 sm:p-6">
+                <div className="text-xl sm:text-3xl font-bold mb-1 sm:mb-2">15K+</div>
+                <div className="text-xs sm:text-base text-white/80">Voyages durables</div>
               </div>
-              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
-                <div className="text-3xl font-bold mb-2">500+</div>
-                <div className="text-white/80">Destinations</div>
+              <div className="card-glass p-4 sm:p-6">
+                <div className="text-xl sm:text-3xl font-bold mb-1 sm:mb-2">600+</div>
+                <div className="text-xs sm:text-base text-white/80">Destinations vertes</div>
               </div>
             </div>
           </div>
