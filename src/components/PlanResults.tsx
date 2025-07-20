@@ -1,8 +1,13 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Clock, MapPin, DollarSign, Star, Gift, Download, Heart } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Clock, MapPin, DollarSign, Star, Gift, Download, Heart, Bot, Loader2, ExternalLink } from 'lucide-react';
+import { GeminiService } from '@/services/geminiService';
+import { toast } from "sonner";
 
 interface Activity {
   id: string;
@@ -38,6 +43,12 @@ const PlanResults: React.FC<PlanResultsProps> = ({
   duration, 
   preferences 
 }) => {
+  const [geminiApiKey, setGeminiApiKey] = useState(() => localStorage.getItem('gemini_api_key') || '');
+  const [plan, setPlan] = useState<DayPlan[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [useGemini, setUseGemini] = useState(false);
+  const [showApiKeyInput, setShowApiKeyInput] = useState(false);
+
   // Simulation de données - en réalité, ceci viendrait d'une API
   const generateMockPlan = (): DayPlan[] => {
     const days: DayPlan[] = [];
@@ -109,9 +120,59 @@ const PlanResults: React.FC<PlanResultsProps> = ({
     return days;
   };
 
-  const plan = generateMockPlan();
-  const totalBudget = plan.reduce((sum, day) => sum + day.totalCost, 0) * people;
-  const freeActivities = plan.flatMap(day => day.activities.filter(activity => activity.isFree));
+  // Générer le plan avec Gemini ou utiliser les données simulées
+  const generateGeminiPlan = async () => {
+    if (!geminiApiKey.trim()) {
+      toast.error("Veuillez saisir votre clé API Gemini");
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const geminiService = new GeminiService(geminiApiKey);
+      
+      // Valider la clé API
+      const isValidKey = await geminiService.validateApiKey();
+      if (!isValidKey) {
+        toast.error("Clé API Gemini invalide");
+        return;
+      }
+
+      // Sauvegarder la clé dans localStorage
+      localStorage.setItem('gemini_api_key', geminiApiKey);
+      
+      // Générer le plan
+      const generatedPlan = await geminiService.generateTravelPlan({
+        destination,
+        budget,
+        people,
+        duration,
+        preferences
+      });
+      
+      setPlan(generatedPlan);
+      setUseGemini(true);
+      setShowApiKeyInput(false);
+      toast.success("Plan généré avec succès par Gemini !");
+      
+    } catch (error) {
+      console.error('Erreur Gemini:', error);
+      toast.error("Erreur lors de la génération avec Gemini");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Initialiser avec les données par défaut
+  useEffect(() => {
+    if (plan.length === 0 && !useGemini) {
+      setPlan(generateMockPlan());
+    }
+  }, []);
+
+  const currentPlan = plan.length > 0 ? plan : generateMockPlan();
+  const totalBudget = currentPlan.reduce((sum, day) => sum + day.totalCost, 0) * people;
+  const freeActivities = currentPlan.flatMap(day => day.activities.filter(activity => activity.isFree));
 
   return (
     <div className="w-full max-w-6xl mx-auto space-y-8 animate-fade-in">
@@ -135,6 +196,103 @@ const PlanResults: React.FC<PlanResultsProps> = ({
               </div>
             </div>
           </div>
+        </CardContent>
+      </Card>
+
+      {/* Section Gemini AI */}
+      <Card className="border-primary/20 bg-gradient-to-r from-primary/5 to-accent/5">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-primary">
+            <Bot className="h-6 w-6" />
+            Améliorer avec Gemini AI
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {!useGemini && !showApiKeyInput && (
+            <div className="text-center space-y-4">
+              <p className="text-muted-foreground">
+                Générez un plan de voyage personnalisé et détaillé avec l'IA Gemini de Google
+              </p>
+              <Button 
+                onClick={() => setShowApiKeyInput(true)} 
+                className="gap-2"
+                variant="outline"
+              >
+                <Bot className="h-4 w-4" />
+                Utiliser Gemini AI
+              </Button>
+            </div>
+          )}
+
+          {showApiKeyInput && (
+            <div className="space-y-4">
+              <Alert>
+                <ExternalLink className="h-4 w-4" />
+                <AlertDescription>
+                  Obtenez votre clé API Gemini gratuitement sur{' '}
+                  <a 
+                    href="https://aistudio.google.com/app/apikey" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-primary hover:underline"
+                  >
+                    Google AI Studio
+                  </a>
+                </AlertDescription>
+              </Alert>
+              
+              <div className="space-y-2">
+                <Label htmlFor="gemini-key">Clé API Gemini</Label>
+                <Input
+                  id="gemini-key"
+                  type="password"
+                  placeholder="Collez votre clé API Gemini ici..."
+                  value={geminiApiKey}
+                  onChange={(e) => setGeminiApiKey(e.target.value)}
+                />
+              </div>
+              
+              <div className="flex gap-2">
+                <Button 
+                  onClick={generateGeminiPlan} 
+                  disabled={isLoading || !geminiApiKey.trim()}
+                  className="gap-2"
+                >
+                  {isLoading ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <Bot className="h-4 w-4" />
+                  )}
+                  Générer avec Gemini
+                </Button>
+                <Button 
+                  variant="outline" 
+                  onClick={() => setShowApiKeyInput(false)}
+                >
+                  Annuler
+                </Button>
+              </div>
+            </div>
+          )}
+
+          {useGemini && (
+            <div className="text-center space-y-2">
+              <div className="flex items-center justify-center gap-2 text-primary">
+                <Bot className="h-5 w-5" />
+                <span className="font-medium">Plan généré par Gemini AI</span>
+              </div>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={() => {
+                  setUseGemini(false);
+                  setPlan(generateMockPlan());
+                }}
+              >
+                Revenir au plan standard
+              </Button>
+            </div>
+          )}
         </CardContent>
       </Card>
 
@@ -175,7 +333,7 @@ const PlanResults: React.FC<PlanResultsProps> = ({
       <div className="space-y-6">
         <h3 className="text-2xl font-bold text-center">Planning Détaillé</h3>
         
-        {plan.map((day, index) => (
+        {currentPlan.map((day, index) => (
           <Card key={day.day} className="shadow-card animate-slide-in" style={{ animationDelay: `${index * 0.1}s` }}>
             <CardHeader className="bg-secondary/50">
               <div className="flex justify-between items-center">
