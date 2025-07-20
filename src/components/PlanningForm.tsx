@@ -34,14 +34,14 @@ const PlanningForm: React.FC<PlanningFormProps> = ({ onSubmit }) => {
   ];
 
   const preferenceOptions = [
-    { value: 'beach', label: 'Plage & Mer', icon: '🏖️' },
+    { value: 'nature', label: 'Nature & Éco-tourisme', icon: '🌿' },
     { value: 'culture', label: 'Culture & Histoire', icon: '🏛️' },
+    { value: 'beach', label: 'Plage & Mer', icon: '🏖️' },
     { value: 'adventure', label: 'Aventure & Sport', icon: '🏔️' },
-    { value: 'food', label: 'Gastronomie', icon: '🍽️' },
-    { value: 'nature', label: 'Nature & Randonnée', icon: '🌿' },
-    { value: 'nightlife', label: 'Vie Nocturne', icon: '🌃' },
-    { value: 'relaxation', label: 'Détente & Spa', icon: '🧘‍♀️' },
-    { value: 'family', label: 'Activités Familiales', icon: '👨‍👩‍👧‍👦' }
+    { value: 'food', label: 'Gastronomie Locale', icon: '🍽️' },
+    { value: 'wellness', label: 'Bien-être & Détente', icon: '🧘‍♀️' },
+    { value: 'family', label: 'Activités Familiales', icon: '👨‍👩‍👧‍👦' },
+    { value: 'sustainable', label: 'Tourisme Durable', icon: '♻️' }
   ];
 
   const handlePreferenceToggle = (preference: string) => {
@@ -59,134 +59,136 @@ const PlanningForm: React.FC<PlanningFormProps> = ({ onSubmit }) => {
   };
 
   return (
-    <Card className="w-full max-w-4xl mx-auto shadow-card">
-      <CardHeader className="text-center pb-6">
-        <CardTitle className="text-3xl font-bold bg-gradient-hero bg-clip-text text-transparent">
-          Planifiez vos vacances de rêve
-        </CardTitle>
-        <p className="text-muted-foreground text-lg">
-          Dites-nous vos préférences et nous créerons le planning parfait pour vous
-        </p>
-      </CardHeader>
+    <div className="container-mobile py-8 sm:py-12">
+      <Card className="card-modern">
+        <CardHeader className="text-center pb-6">
+          <CardTitle className="heading-mobile sm:text-3xl font-bold gradient-text">
+            Planifiez votre voyage éco-responsable
+          </CardTitle>
+          <p className="text-muted-foreground text-mobile sm:text-lg mt-2">
+            Créons ensemble un voyage respectueux de l'environnement, parfaitement adapté à vos envies
+          </p>
+        </CardHeader>
 
-      <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-8">
-          {/* Destination */}
-          <div className="space-y-3">
-            <Label className="text-base font-semibold flex items-center gap-2">
-              <MapPin className="h-5 w-5 text-primary" />
-              Destination souhaitée
-            </Label>
-            <Input
-              placeholder="Ex: Paris, Bali, New York..."
-              value={formData.destination}
-              onChange={(e) => setFormData(prev => ({ ...prev, destination: e.target.value }))}
-              className="text-lg h-12"
-              required
-            />
-          </div>
-
-          {/* Budget et personnes */}
-          <div className="grid md:grid-cols-2 gap-6">
+        <CardContent className="px-4 sm:px-6">
+          <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8">
+            {/* Destination */}
             <div className="space-y-3">
-              <Label className="text-base font-semibold flex items-center gap-2">
-                <DollarSign className="h-5 w-5 text-primary" />
-                Budget par personne
+              <Label className="text-mobile sm:text-base font-semibold flex items-center gap-2">
+                <MapPin className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
+                Destination souhaitée
               </Label>
-              <Select value={formData.budget} onValueChange={(value) => setFormData(prev => ({ ...prev, budget: value }))}>
-                <SelectTrigger className="h-12 text-lg">
-                  <SelectValue placeholder="Sélectionnez votre budget" />
-                </SelectTrigger>
-                <SelectContent>
-                  {budgetOptions.map(option => (
-                    <SelectItem key={option.value} value={option.value}>
-                      <span className="flex items-center gap-2">
-                        <span>{option.icon}</span>
-                        {option.label}
-                      </span>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <Input
+                placeholder="Ex: Costa Rica, Norvège, Nouvelle-Zélande..."
+                value={formData.destination}
+                onChange={(e) => setFormData(prev => ({ ...prev, destination: e.target.value }))}
+                className="input-mobile"
+                required
+              />
             </div>
 
+            {/* Budget et personnes - Stack sur mobile */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+              <div className="space-y-3">
+                <Label className="text-mobile sm:text-base font-semibold flex items-center gap-2">
+                  <DollarSign className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
+                  Budget par personne
+                </Label>
+                <Select value={formData.budget} onValueChange={(value) => setFormData(prev => ({ ...prev, budget: value }))}>
+                  <SelectTrigger className="input-mobile">
+                    <SelectValue placeholder="Sélectionnez votre budget" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white border border-border shadow-lg">
+                    {budgetOptions.map(option => (
+                      <SelectItem key={option.value} value={option.value}>
+                        <span className="flex items-center gap-2">
+                          <span>{option.icon}</span>
+                          {option.label}
+                        </span>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-3">
+                <Label className="text-mobile sm:text-base font-semibold flex items-center gap-2">
+                  <Users className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
+                  Nombre de personnes
+                </Label>
+                <Select value={formData.people.toString()} onValueChange={(value) => setFormData(prev => ({ ...prev, people: parseInt(value) }))}>
+                  <SelectTrigger className="input-mobile">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white border border-border shadow-lg">
+                    {[1, 2, 3, 4, 5, 6, 7, 8].map(num => (
+                      <SelectItem key={num} value={num.toString()}>
+                        {num} {num === 1 ? 'personne' : 'personnes'}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            {/* Durée */}
             <div className="space-y-3">
-              <Label className="text-base font-semibold flex items-center gap-2">
-                <Users className="h-5 w-5 text-primary" />
-                Nombre de personnes
+              <Label className="text-mobile sm:text-base font-semibold flex items-center gap-2">
+                <Calendar className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
+                Durée du séjour (jours)
               </Label>
-              <Select value={formData.people.toString()} onValueChange={(value) => setFormData(prev => ({ ...prev, people: parseInt(value) }))}>
-                <SelectTrigger className="h-12 text-lg">
+              <Select value={formData.duration.toString()} onValueChange={(value) => setFormData(prev => ({ ...prev, duration: parseInt(value) }))}>
+                <SelectTrigger className="input-mobile">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent>
-                  {[1, 2, 3, 4, 5, 6, 7, 8].map(num => (
-                    <SelectItem key={num} value={num.toString()}>
-                      {num} {num === 1 ? 'personne' : 'personnes'}
+                <SelectContent className="bg-white border border-border shadow-lg">
+                  {[1, 2, 3, 4, 5, 6, 7, 10, 14, 21].map(days => (
+                    <SelectItem key={days} value={days.toString()}>
+                      {days} {days === 1 ? 'jour' : 'jours'}
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
-          </div>
 
-          {/* Durée */}
-          <div className="space-y-3">
-            <Label className="text-base font-semibold flex items-center gap-2">
-              <Calendar className="h-5 w-5 text-primary" />
-              Durée du séjour (jours)
-            </Label>
-            <Select value={formData.duration.toString()} onValueChange={(value) => setFormData(prev => ({ ...prev, duration: parseInt(value) }))}>
-              <SelectTrigger className="h-12 text-lg">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {[1, 2, 3, 4, 5, 6, 7, 10, 14, 21].map(days => (
-                  <SelectItem key={days} value={days.toString()}>
-                    {days} {days === 1 ? 'jour' : 'jours'}
-                  </SelectItem>
+            {/* Préférences - Responsive grid */}
+            <div className="space-y-4">
+              <Label className="text-mobile sm:text-base font-semibold flex items-center gap-2">
+                <Heart className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
+                Vos préférences éco-responsables
+              </Label>
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+                {preferenceOptions.map(option => (
+                  <button
+                    key={option.value}
+                    type="button"
+                    onClick={() => handlePreferenceToggle(option.value)}
+                    className={`touch-target p-3 sm:p-4 rounded-xl border transition-all duration-200 text-left hover:scale-105 ${
+                      formData.preferences.includes(option.value)
+                        ? 'border-primary bg-primary/10 shadow-md'
+                        : 'border-border hover:border-primary/50'
+                    }`}
+                  >
+                    <div className="text-xl sm:text-2xl mb-1 sm:mb-2">{option.icon}</div>
+                    <div className="text-xs sm:text-sm font-medium leading-tight">{option.label}</div>
+                  </button>
                 ))}
-              </SelectContent>
-            </Select>
-          </div>
-
-          {/* Préférences */}
-          <div className="space-y-4">
-            <Label className="text-base font-semibold flex items-center gap-2">
-              <Heart className="h-5 w-5 text-primary" />
-              Vos préférences (sélectionnez tout ce qui vous intéresse)
-            </Label>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-              {preferenceOptions.map(option => (
-                <button
-                  key={option.value}
-                  type="button"
-                  onClick={() => handlePreferenceToggle(option.value)}
-                  className={`p-4 rounded-lg border transition-all duration-200 text-left hover:scale-105 ${
-                    formData.preferences.includes(option.value)
-                      ? 'border-primary bg-primary/10 shadow-md'
-                      : 'border-border hover:border-primary/50'
-                  }`}
-                >
-                  <div className="text-2xl mb-2">{option.icon}</div>
-                  <div className="text-sm font-medium">{option.label}</div>
-                </button>
-              ))}
+              </div>
             </div>
-          </div>
 
-          <Button 
-            type="submit" 
-            size="lg" 
-            className="w-full h-14 text-lg font-semibold bg-gradient-ocean hover:opacity-90 transition-all duration-300 hover:scale-105"
-            disabled={!formData.destination || !formData.budget}
-          >
-            <Sparkles className="mr-2 h-5 w-5" />
-            Générer mon planning de rêve
-          </Button>
-        </form>
-      </CardContent>
-    </Card>
+            <Button 
+              type="submit" 
+              size="lg" 
+              className="w-full button-nature text-base sm:text-lg font-semibold h-12 sm:h-14 touch-target"
+              disabled={!formData.destination || !formData.budget}
+            >
+              <Sparkles className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
+              Créer mon voyage éco-responsable
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
+    </div>
   );
 };
 
