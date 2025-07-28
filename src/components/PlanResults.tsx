@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Clock, MapPin, DollarSign, Star, Gift, Download, Heart, Bot, Loader2, ExternalLink } from 'lucide-react';
+import { Clock, MapPin, DollarSign, Star, Gift, Download, Heart, Bot, Loader2, ExternalLink, ArrowLeft } from 'lucide-react';
 import { GeminiService } from '@/services/geminiService';
 import { toast } from "sonner";
 
@@ -34,6 +34,7 @@ interface PlanResultsProps {
   people: number;
   duration: number;
   preferences: string[];
+  onBack?: () => void;
 }
 
 const PlanResults: React.FC<PlanResultsProps> = ({ 
@@ -41,7 +42,8 @@ const PlanResults: React.FC<PlanResultsProps> = ({
   budget, 
   people, 
   duration, 
-  preferences 
+  preferences,
+  onBack 
 }) => {
   const [geminiApiKey, setGeminiApiKey] = useState(() => localStorage.getItem('gemini_api_key') || '***REMOVED***');
   const [plan, setPlan] = useState<DayPlan[]>([]);
@@ -176,6 +178,18 @@ const PlanResults: React.FC<PlanResultsProps> = ({
 
   return (
     <div className="w-full max-w-6xl mx-auto space-y-8 animate-fade-in">
+      {/* Bouton retour */}
+      {onBack && (
+        <Button 
+          variant="ghost" 
+          onClick={onBack}
+          className="flex items-center gap-2 mb-4"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Retour au planificateur
+        </Button>
+      )}
+
       {/* En-tête des résultats */}
       <Card className="bg-gradient-hero text-white">
         <CardContent className="p-8">
