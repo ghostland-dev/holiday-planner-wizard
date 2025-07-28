@@ -16,7 +16,8 @@ import {
   Clock,
   MessageCircle,
   MapPin,
-  Calendar
+  Calendar,
+  ArrowLeft
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
@@ -55,11 +56,13 @@ interface TripInvitationProps {
     preferences: string[];
   };
   onInviteComplete?: (collaboration: TripCollaboration) => void;
+  onBack?: () => void;
 }
 
-const TripInvitation: React.FC<TripInvitationProps> = ({ 
-  tripData, 
-  onInviteComplete 
+const TripInvitation: React.FC<TripInvitationProps> = ({
+  tripData,
+  onInviteComplete,
+  onBack
 }) => {
   const { toast } = useToast();
   const [inviteEmails, setInviteEmails] = useState<string[]>([]);
@@ -163,6 +166,18 @@ const TripInvitation: React.FC<TripInvitationProps> = ({
 
   return (
     <div className="space-y-6">
+      {/* Bouton retour */}
+      {onBack && (
+        <Button 
+          variant="ghost" 
+          onClick={onBack}
+          className="flex items-center gap-2 mb-4"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Retour aux résultats
+        </Button>
+      )}
+
       {/* En-tête du voyage */}
       {tripData && (
         <Card className="card-modern">

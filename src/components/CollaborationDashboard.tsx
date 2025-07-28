@@ -20,7 +20,8 @@ import {
   CheckCircle2,
   AlertCircle,
   TrendingUp,
-  Settings
+  Settings,
+  ArrowLeft
 } from 'lucide-react';
 import { TripCollaboration, TripMember } from './TripInvitation';
 import { useToast } from '@/hooks/use-toast';
@@ -28,6 +29,7 @@ import { useToast } from '@/hooks/use-toast';
 interface CollaborationDashboardProps {
   collaboration: TripCollaboration;
   onUpdateCollaboration?: (updated: TripCollaboration) => void;
+  onBack?: () => void;
 }
 
 interface PreferenceVote {
@@ -44,7 +46,8 @@ interface BudgetVote {
 
 const CollaborationDashboard: React.FC<CollaborationDashboardProps> = ({
   collaboration,
-  onUpdateCollaboration
+  onUpdateCollaboration,
+  onBack
 }) => {
   const { toast } = useToast();
   const [newMessage, setNewMessage] = useState('');
@@ -118,6 +121,18 @@ const CollaborationDashboard: React.FC<CollaborationDashboardProps> = ({
 
   return (
     <div className="space-y-6">
+      {/* Bouton retour */}
+      {onBack && (
+        <Button 
+          variant="ghost" 
+          onClick={onBack}
+          className="flex items-center gap-2 mb-4"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Retour aux invitations
+        </Button>
+      )}
+
       {/* En-tête de collaboration */}
       <Card className="card-modern">
         <CardHeader>
