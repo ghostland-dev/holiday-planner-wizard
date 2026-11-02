@@ -45,7 +45,7 @@ const PlanResults: React.FC<PlanResultsProps> = ({
   preferences,
   onBack 
 }) => {
-  const [geminiApiKey, setGeminiApiKey] = useState(() => localStorage.getItem('gemini_api_key') || '***REMOVED***');
+  const [geminiApiKey, setGeminiApiKey] = useState(() => localStorage.getItem('gemini_api_key') || import.meta.env.VITE_GEMINI_API_KEY || '');
   const [plan, setPlan] = useState<DayPlan[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [useGemini, setUseGemini] = useState(false);
